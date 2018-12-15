@@ -68,9 +68,16 @@ gulp.task('locale', function() {
   */
 gulp.task('resolver', function() {
   return inquirer.prompt([
-      resolverQ
+      resolverQ, Object.assign(templateQ, {default: (answers) => {
+        return answers.resolverName
+      }})
     ]).then( (answers) => {
-      console.log('gotcha', answers);
+      return gulp.src(__dirname + '/modules/lowbot/resolver/templates/*.js')
+        .pipe( gulpPlugins.template(answers) )
+        .pipe( gulpPlugins.rename((file) => {
+          file.basename = file.basename.replace('template', answers.resolverName);
+        }))
+        .pipe( gulp.dest('./src/resolvers') )
     });
 });
 
