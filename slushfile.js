@@ -18,6 +18,7 @@ const gulpPlugins = require('auto-plug')('gulp');
 const _ = require('underscore.string');
 const inquirer = require('inquirer');
 const path = require('path');
+const PO = require('pofile');
 
 function format(string) {
     var username = string.toLowerCase();
@@ -59,7 +60,13 @@ gulp.task('locale', function() {
   return inquirer.prompt([
       localeQ
     ]).then( (answers) => {
-      console.log('gotcha', answers);
+      let po = new PO();
+      po.headers = {
+        "X-Poedit-Basepath": "../../tpl",
+        "X-Poedit-SearchPath-0": "."
+      };
+      return gulpPlugins.file(`${answers.localeName}/messages.po`, po.toString())
+        .pipe( gulp.dest('./src/locale') );
     });
 });
 
