@@ -35,5 +35,9 @@
     },
     "keywords": [
         "slushgenerator"
-    ]
+    ],
+    "devDependencies": {
+        "auto-plug": "^1.2.0",
+        "i18n-locales": "0.0.2"
+    }
 }

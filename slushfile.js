@@ -8,14 +8,16 @@
 
 'use strict';
 
-var gulp = require('gulp'),
-    install = require('gulp-install'),
-    conflict = require('gulp-conflict'),
-    template = require('gulp-template'),
-    rename = require('gulp-rename'),
-    _ = require('underscore.string'),
-    inquirer = require('inquirer'),
-    path = require('path');
+const localeQ = require('./modules/lowbot/locale/questions/name');
+const resolverQ = require('./modules/lowbot/resolver/questions/name.json');
+const skillsetQ = require('./modules/lowbot/skillset/questions/name.json');
+const templateQ = require('./modules/lowbot/template/questions/name.json');
+
+const gulp = require('gulp');
+const gulpPlugins = require('auto-plug')('gulp');
+const _ = require('underscore.string');
+const inquirer = require('inquirer');
+const path = require('path');
 
 function format(string) {
     var username = string.toLowerCase();
@@ -50,6 +52,61 @@ var defaults = (function () {
     };
 })();
 
+/**
+  * Locale
+  */
+gulp.task('locale', function() {
+  return inquirer.prompt([
+      localeQ
+    ]).then( (answers) => {
+      console.log('gotcha', answers);
+    });
+});
+
+/**
+  * Resolver
+  */
+gulp.task('resolver', function() {
+  return inquirer.prompt([
+      resolverQ
+    ]).then( (answers) => {
+      console.log('gotcha', answers);
+    });
+});
+
+/**
+  * Skillset
+  */
+gulp.task('skillset', function() {
+  return inquirer.prompt([
+      defaults.authorName,
+      skillsetQ
+    ]).then( (answers) => {
+      console.log('gotcha', answers);
+    });
+});
+
+/**
+  * Template
+  */
+gulp.task('template', function() {
+  return inquirer.prompt([
+      templateQ
+    ]).then( (answers) => {
+      return gulp.src(__dirname + '/modules/lowbot/template/templates/*.hbs')
+        .pipe( gulpPlugins.template(answers) )
+        .pipe( gulpPlugins.rename((file) => {
+          if (file.basename.includes('ssml')) {
+            file.dirname = './speech';
+          } else if (file.basename.includes('body')) {
+            file.dirname = './display';
+          }
+          file.basename = file.basename.replace('template', answers.templateName);
+        }))
+        .pipe( gulp.dest('./src/tpl') )
+    });
+});
+
 gulp.task('default', function (done) {
     var prompts = [{
         name: 'appName',
@@ -83,22 +140,24 @@ gulp.task('default', function (done) {
     inquirer
         .prompt(prompts)
         .then(function (answers) {
-            if (!answers.moveon) {
-                return done();
-            }
-            answers.appNameSlug = _.slugify(answers.appName);
-            gulp.src(__dirname + '/templates/**')
-                .pipe(template(answers))
-                .pipe(rename(function (file) {
-                    if (file.basename[0] === '_') {
-                        file.basename = '.' + file.basename.slice(1);
-                    }
-                }))
-                .pipe(conflict('./'))
-                .pipe(gulp.dest('./'))
-                .pipe(install())
-                .on('end', function () {
-                    done();
-                });
+            console.log(answers);
+            done();
+            // if (!answers.moveon) {
+            //     return done();
+            // }
+            // answers.appNameSlug = _.slugify(answers.appName);
+            // gulp.src(__dirname + '/templates/**')
+            //     .pipe( gulpPlugins.template(answers) )
+            //     .pipe( gulpPlugins.rename(function (file) {
+            //         if (file.basename[0] === '_') {
+            //             file.basename = '.' + file.basename.slice(1);
+            //         }
+            //     }) )
+            //     .pipe( gulpPlugins.conflict('./') )
+            //     .pipe(gulp.dest('./'))
+            //     .pipe( gulpPlugins.install() )
+            //     .on('end', function () {
+            //         done();
+            //     });
         });
 });
