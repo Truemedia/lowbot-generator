@@ -1,4 +1,4 @@
-# Slush Lowbot [![Build Status](https://secure.travis-ci.org/Truemedia/slush-lowbot.png?branch=master)](https://travis-ci.org/Truemedia/slush-lowbot) [![NPM version](https://badge-me.herokuapp.com/api/npm/slush-lowbot.png)](http://badges.enytc.com/for/npm/slush-lowbot)
+# Lowbot generator [![Build Status](https://secure.travis-ci.org/Truemedia/slush-lowbot.png?branch=master)](https://travis-ci.org/Truemedia/slush-lowbot) [![NPM version](https://badge-me.herokuapp.com/api/npm/slush-lowbot.png)](http://badges.enytc.com/for/npm/slush-lowbot)
 
 > Generator for functionality or features of lowbot
 
@@ -11,18 +11,39 @@ Install `slush-lowbot` globally:
 $ npm install -g slush-lowbot
 ```
 
-### Usage
+## Basic Usage
 
 Create a new folder for your project:
 
 ```bash
-$ mkdir my-slush-lowbot
+$ mkdir custom-skillset
 ```
 
 Run the generator from within the new folder:
 
 ```bash
-$ cd my-slush-lowbot && slush lowbot
+$ cd custom-skillset && slush lowbot
+```
+
+## Advanced Usage
+### Locale
+```bash
+  slush lowbot:locale
+```
+
+### Resolver
+```bash
+  slush lowbot:resolver
+```
+
+### Skillset
+```bash
+  slush lowbot:skillset
+```
+
+### Template
+```bash
+  slush lowbot:template
 ```
 
 ## Getting To Know Slush
@@ -40,7 +61,7 @@ See the [CONTRIBUTING Guidelines](https://github.com/Truemedia/slush-lowbot/blob
 ## Support
 If you have any problem or suggestion please open an issue [here](https://github.com/Truemedia/slush-lowbot/issues).
 
-## License 
+## License
 
 The MIT License
 
@@ -66,4 +87,3 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
-
