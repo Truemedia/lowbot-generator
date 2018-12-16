@@ -6,23 +6,13 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
-const localeQ = require('./modules/lowbot/locale/questions/name');
-const resolverQ = require('./modules/lowbot/resolver/questions/name.json');
-const skillsetQ = require('./modules/lowbot/skillset/questions/name.json');
-const templateQ = require('./modules/lowbot/template/questions/name.json');
-
 const gulp = require('gulp');
 const gulpPlugins = require('auto-plug')('gulp');
 const _ = require('underscore.string');
 const inquirer = require('inquirer');
 const path = require('path');
-
-// Pipes
-const Locale = require('./modules/lowbot/locale/pipes/locale');
-const Resolver = require('./modules/lowbot/resolver/pipes/resolver');
-const Templates = require('./modules/lowbot/template/pipes/templates');
+const requireDir = require('require-dir');
+requireDir(__dirname + '/tasks', { recurse: true });
 
 function format(string) {
     var username = string.toLowerCase();
@@ -56,53 +46,6 @@ var defaults = (function () {
         authorEmail: user.email || ''
     };
 })();
-
-/**
-  * Locale
-  */
-gulp.task('locale', function() {
-  return inquirer.prompt([
-      localeQ
-    ]).then(answers =>
-      new Locale(answers.localeName).pipeline().pipe( gulp.dest('./src/locale') )
-    );
-});
-
-/**
-  * Resolver
-  */
-gulp.task('resolver', function() {
-  return inquirer.prompt([
-      resolverQ, Object.assign(templateQ, {default: (answers) => {
-        return answers.resolverName
-      }})
-    ]).then(answers =>
-      new Resolver(answers.resolverName, answers.templateName).pipeline().pipe( gulp.dest('./src/resolvers') )
-    );
-});
-
-/**
-  * Skillset
-  */
-gulp.task('skillset', function() {
-  return inquirer.prompt([
-      defaults.authorName,
-      skillsetQ
-    ]).then( (answers) => {
-      console.log('gotcha', answers);
-    });
-});
-
-/**
-  * Template
-  */
-gulp.task('template', function() {
-  return inquirer.prompt([
-      templateQ
-    ]).then(answers =>
-      new Templates(answers.templateName).pipeline().pipe( gulp.dest('./src/tpl') )
-    );
-});
 
 gulp.task('default', function (done) {
     var prompts = [{
