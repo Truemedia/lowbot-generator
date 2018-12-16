@@ -21,6 +21,7 @@ const path = require('path');
 const PO = require('pofile');
 
 // Pipes
+const Resolver = require('./modules/lowbot/resolver/pipes/resolver');
 const Templates = require('./modules/lowbot/template/pipes/templates');
 
 function format(string) {
@@ -82,11 +83,7 @@ gulp.task('resolver', function() {
         return answers.resolverName
       }})
     ]).then( (answers) => {
-      return gulp.src(__dirname + '/modules/lowbot/resolver/templates/*.js')
-        .pipe( gulpPlugins.template(answers) )
-        .pipe( gulpPlugins.rename((file) => {
-          file.basename = file.basename.replace('template', answers.resolverName);
-        }))
+      return new Resolver(answers.resolverName, answers.templateName).pipeline()
         .pipe( gulp.dest('./src/resolvers') )
     });
 });
