@@ -18,9 +18,9 @@ const gulpPlugins = require('auto-plug')('gulp');
 const _ = require('underscore.string');
 const inquirer = require('inquirer');
 const path = require('path');
-const PO = require('pofile');
 
 // Pipes
+const Locale = require('./modules/lowbot/locale/pipes/locale');
 const Resolver = require('./modules/lowbot/resolver/pipes/resolver');
 const Templates = require('./modules/lowbot/template/pipes/templates');
 
@@ -64,12 +64,7 @@ gulp.task('locale', function() {
   return inquirer.prompt([
       localeQ
     ]).then( (answers) => {
-      let po = new PO();
-      po.headers = {
-        "X-Poedit-Basepath": "../../tpl",
-        "X-Poedit-SearchPath-0": "."
-      };
-      return gulpPlugins.file(`${answers.localeName}/messages.po`, po.toString())
+      return new Locale(answers.localeName).pipeline()
         .pipe( gulp.dest('./src/locale') );
     });
 });
