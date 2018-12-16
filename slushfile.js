@@ -20,6 +20,9 @@ const inquirer = require('inquirer');
 const path = require('path');
 const PO = require('pofile');
 
+// Pipes
+const SSML = require('./modules/lowbot/template/pipes/ssml');
+
 function format(string) {
     var username = string.toLowerCase();
     return username.replace(/\s/g, '');
@@ -107,16 +110,7 @@ gulp.task('template', function() {
   return inquirer.prompt([
       templateQ
     ]).then( (answers) => {
-      return gulp.src(__dirname + '/modules/lowbot/template/templates/*.hbs')
-        .pipe( gulpPlugins.template(answers) )
-        .pipe( gulpPlugins.rename((file) => {
-          if (file.basename.includes('ssml')) {
-            file.dirname = './speech';
-          } else if (file.basename.includes('body')) {
-            file.dirname = './display';
-          }
-          file.basename = file.basename.replace('template', answers.templateName);
-        }))
+      return new SSML(answers.templateName).pipeline()
         .pipe( gulp.dest('./src/tpl') )
     });
 });

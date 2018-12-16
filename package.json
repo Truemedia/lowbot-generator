@@ -38,8 +38,11 @@
     ],
     "devDependencies": {
         "auto-plug": "^1.2.0",
+        "gulp-add-src": "^1.0.0",
+        "gulp-debug": "^4.0.0",
         "gulp-file": "^0.4.0",
         "i18n-locales": "0.0.2",
+        "lazypipe": "^1.0.2",
         "pofile": "^1.0.11"
     }
 }
