@@ -63,10 +63,9 @@ var defaults = (function () {
 gulp.task('locale', function() {
   return inquirer.prompt([
       localeQ
-    ]).then( (answers) => {
-      return new Locale(answers.localeName).pipeline()
-        .pipe( gulp.dest('./src/locale') );
-    });
+    ]).then(answers =>
+      new Locale(answers.localeName).pipeline().pipe( gulp.dest('./src/locale') )
+    );
 });
 
 /**
@@ -77,10 +76,9 @@ gulp.task('resolver', function() {
       resolverQ, Object.assign(templateQ, {default: (answers) => {
         return answers.resolverName
       }})
-    ]).then( (answers) => {
-      return new Resolver(answers.resolverName, answers.templateName).pipeline()
-        .pipe( gulp.dest('./src/resolvers') )
-    });
+    ]).then(answers =>
+      new Resolver(answers.resolverName, answers.templateName).pipeline().pipe( gulp.dest('./src/resolvers') )
+    );
 });
 
 /**
@@ -101,10 +99,9 @@ gulp.task('skillset', function() {
 gulp.task('template', function() {
   return inquirer.prompt([
       templateQ
-    ]).then( (answers) => {
-      return new Templates(answers.templateName).pipeline()
-        .pipe( gulp.dest('./src/tpl') )
-    });
+    ]).then(answers =>
+      new Templates(answers.templateName).pipeline().pipe( gulp.dest('./src/tpl') )
+    );
 });
 
 gulp.task('default', function (done) {
