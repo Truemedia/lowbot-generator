@@ -2,7 +2,7 @@ const lazypipe = require('lazypipe');
 const gulpPlugins = require('auto-plug')('gulp');
 const Pipe = require('./../../../../classes/pipe');
 
-class SSML extends Pipe
+class Templates extends Pipe
 {
   constructor(tplName)
   {
@@ -30,4 +30,4 @@ class SSML extends Pipe
   }
 }
 
-module.exports = SSML;
+module.exports = Templates;

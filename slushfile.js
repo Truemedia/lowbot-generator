@@ -21,7 +21,7 @@ const path = require('path');
 const PO = require('pofile');
 
 // Pipes
-const SSML = require('./modules/lowbot/template/pipes/ssml');
+const Templates = require('./modules/lowbot/template/pipes/templates');
 
 function format(string) {
     var username = string.toLowerCase();
@@ -110,7 +110,7 @@ gulp.task('template', function() {
   return inquirer.prompt([
       templateQ
     ]).then( (answers) => {
-      return new SSML(answers.templateName).pipeline()
+      return new Templates(answers.templateName).pipeline()
         .pipe( gulp.dest('./src/tpl') )
     });
 });
